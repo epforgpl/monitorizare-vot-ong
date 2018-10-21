@@ -16,6 +16,8 @@ namespace MonitorizareVot.Ong.Api.Services
         public string Salt { get; set; }
         public string GetHash(string clearString)
         {
+            return clearString; // TODO take it down after we get hash workings
+
             // SHA512 is disposable by inheritance.  
             using (var sha256 = SHA256.Create())
             {
