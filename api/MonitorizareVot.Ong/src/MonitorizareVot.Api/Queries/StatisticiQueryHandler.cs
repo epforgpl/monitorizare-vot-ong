@@ -35,10 +35,10 @@ namespace MonitorizareVot.Ong.Api.Queries
             StatisticiQueryBuilder queryBuilder = new StatisticiQueryBuilder
             {
                 Query = $@"SELECT OB.Text AS Label, OB.Id AS Cod, RD.Flagged, COUNT(*) as Value
-                  FROM Answer AS R 
-                  INNER JOIN OptionsToQuestions AS RD ON RD.IdOptionToQuestion = R.IdOptionToQuestion
+                  FROM Answers AS R 
+                  INNER JOIN OptionsToQuestions AS RD ON RD.Id = R.IdOptionToQuestion
                   INNER JOIN Option AS OB ON OB.Id = RD.Id
-                  INNER JOIN Observer O ON O.IdObserver = R.IdObserver
+                  INNER JOIN Observer O ON O.Id = R.IdObserver
                   WHERE RD.Id = {message.IdIntrebare}",
                 CacheKey = $"StatisticiOptiuni-{message.IdIntrebare}"
             };
@@ -81,7 +81,7 @@ namespace MonitorizareVot.Ong.Api.Queries
             //    Query = @"SELECT J.Name AS Label, COUNT(*) as Value
             //      FROM County J
             //      INNER JOIN PollingStations AS SV ON SV.Id = J.Id
-            //      INNER JOIN [Answer] AS R ON R.IdPollingStation = SV.Id
+            //      INNER JOIN [Answers] AS R ON R.IdPollingStation = SV.Id
             //      INNER JOIN Observer O ON O.IdObserver = R.IdObserver",
             //    CacheKey = "StatisticiObservatori"
             //};
@@ -135,10 +135,10 @@ namespace MonitorizareVot.Ong.Api.Queries
             StatisticiQueryBuilder queryBuilder = new StatisticiQueryBuilder
             {
                 Query = @"SELECT R.CountyCode AS Label, COUNT(*) as Value
-                  FROM Answer AS R 
-                  INNER JOIN OptionsToQuestions AS RD ON RD.IdOptionToQuestion = R.IdOptionToQuestion
-                  INNER JOIN Observer O ON O.IdObserver = R.IdObserver
-                  INNER JOIN Question I ON I.Id = RD.Id
+                  FROM Answers AS R 
+                  INNER JOIN OptionsToQuestions AS RD ON RD.Id = R.IdOptionToQuestion
+                  INNER JOIN Observer O ON O.Id = R.IdObserver
+                  INNER JOIN Question I ON I.Id = RD.IdQuestion
                   WHERE RD.Flagged = 1",
                 CacheKey = "StatisticiJudete"
             };
@@ -178,10 +178,10 @@ namespace MonitorizareVot.Ong.Api.Queries
             StatisticiQueryBuilder queryBuilder = new StatisticiQueryBuilder
             {
                 Query = @"SELECT R.CountyCode AS Label, R.PollingStationNumber AS Cod, COUNT(*) as Value
-                  FROM Answer AS R 
-                  INNER JOIN OptionsToQuestions AS RD ON RD.IdOptionToQuestion = R.IdOptionToQuestion
-                  INNER JOIN Observer O ON O.IdObserver = R.IdObserver
-                  INNER JOIN Question I ON I.Id = RD.Id
+                  FROM Answers AS R 
+                  INNER JOIN OptionsToQuestions AS RD ON RD.Id = R.IdOptionToQuestion
+                  INNER JOIN Observer O ON O.Id = R.IdObserver
+                  INNER JOIN Question I ON I.Id = RD.IdQuestion
                   WHERE RD.Flagged = 1",
                 CacheKey = "StatisticiSectii"
             };
