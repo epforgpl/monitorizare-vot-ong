@@ -29,7 +29,7 @@ namespace MonitorizareVot.Ong.Api.Queries
         public async Task<ApiListResponse<RaspunsModel>> Handle(RaspunsuriQuery message, CancellationToken cancellationToken)
         {
             string queryUnPaged = $@"SELECT IdPollingStation AS IdSectie, R.IdObserver AS IdObserver, O.Name AS Observer, CONCAT(CountyCode, ' ', PollingStationNumber) AS Sectie, MAX(LastModified) AS LastModified
-                FROM Answer R
+                FROM Answers R
                 INNER JOIN OBSERVATOR O ON O.IdObserver = R.IdObserver
                 INNER JOIN OptionsToQuestions RD ON RD.IdOptionToQuestion = R.IdOptionToQuestion
                 WHERE RD.Flagged = {Convert.ToInt32(message.Urgent)}";
