@@ -1,0 +1,45 @@
+FROM node:10-alpine AS frontend
+WORKDIR /app
+
+COPY ./ ./
+WORKDIR frontend
+
+RUN npm install
+RUN npm run-script build
+
+
+
+
+FROM microsoft/dotnet:2.1-sdk AS build-env
+WORKDIR /app
+
+COPY ./ ./
+
+RUN dotnet restore **/*.csproj
+
+RUN dotnet build **/*.csproj
+
+# RUN dotnet test **/*[Tt]ests/*.csproj
+
+
+####################################
+# Build runtime image
+
+FROM microsoft/dotnet:2.1-aspnetcore-runtime
+WORKDIR /
+COPY --from=build-env /app/api/MonitorizareVot.Ong/src/MonitorizareVot.Api/out/ .
+COPY --from=build-env /app/api/MonitorizareVot.Ong/src/MonitorizareVot.Api/wwwroot/ ./wwwroot
+
+# Copy appsettings.json.template - Because in /out there is one truncated by publish
+# COPY --from=build-env /app/src/MonitorizareVot.Api/appsettings.json.template ./
+
+RUN apt-get update && \
+      apt-get install -y gettext \
+      && rm -rf /var/lib/apt/lists/* \
+      && apt-get clean -y
+
+ENTRYPOINT ["dotnet", "MonitorizareVot.Api.dll"]
+
+# COPY run.sh /
+# RUN chmod +x run.sh
+# CMD ["./run.sh"]

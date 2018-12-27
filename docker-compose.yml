@@ -1,0 +1,12 @@
+version: '2'
+services:
+  mv-api:
+    build:
+      context: .
+      dockerfile: Dockerfile-api2
+    image: mv-admin-api
+    ports:
+      - 8090:80
+    container_name: mv-admin-api
+    restart: always
+    # env_file: .env
